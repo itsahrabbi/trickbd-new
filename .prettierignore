@@ -1,0 +1,47 @@
+# Dependencies
+node_modules
+yarn.lock
+package-lock.json
+
+# Expo
+.expo
+.expo-shared
+
+# Build outputs
+build
+dist
+web-build
+
+# Environment and config files
+.env*
+app.json
+metro.config.js
+
+# iOS
+ios
+
+# Android
+android
+
+# Testing
+coverage
+
+# Misc
+.DS_Store
+*.log
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# IDE specific
+.vscode
+.idea
+
+# Generated files
+*.generated.js
+*.generated.jsx
+*.generated.ts
+*.generated.tsx
