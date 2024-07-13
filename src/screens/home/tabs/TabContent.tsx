@@ -1,34 +1,38 @@
-import React, { useCallback, Suspense } from 'react';
-import { View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
-import Animated, { SlideInRight, SlideInLeft } from 'react-native-reanimated';
+import React, { useCallback, Suspense } from "react";
+import { View } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 
-const TabCategoryPosts = React.lazy(() => import('@/src/screens/home/tabs/TabCategoryPosts'));
+const TabCategoryPosts = React.lazy(
+    () => import("@/src/screens/home/tabs/TabCategoryPosts")
+);
 
-const TabContent = ({ tab, direction }) => {
-  const AnimatedComponent = useCallback(
-    () => (
-      <Animated.View
-        entering={direction === 'right' ? SlideInRight.duration(500) : SlideInLeft.duration(500)}
-        style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <View>
-          <Suspense fallback={<ActivityIndicator size="small" color="gray" animating />}>
-            <TabCategoryPosts slug={tab.slug} />
-          </Suspense>
-        </View>
-      </Animated.View>
-    ),
-    [tab, direction]
-  );
+const TabContent = ({ tab }) => {
+    const AnimatedComponent = useCallback(
+        () => (
+            <Suspense
+                fallback={
+                    <View
+                        style={{
+                            flex: 1,
+                            alignItems: "center",
+                            justifyContent: "center"
+                        }}
+                    >
+                        <ActivityIndicator
+                            size="small"
+                            color="gray"
+                            animating
+                        />
+                    </View>
+                }
+            >
+                <TabCategoryPosts slug={tab.slug} />
+            </Suspense>
+        ),
+        [tab]
+    );
 
-  return <AnimatedComponent />;
+    return <AnimatedComponent />;
 };
 
 export default TabContent;

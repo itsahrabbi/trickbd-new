@@ -1,43 +1,60 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, RefreshControl } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import Header from './components/Header';
 import { useColorScheme } from '@/src/hooks/useColorScheme';
 import { useBookmarkPost } from '@/src/hooks/post/useBookmarkPost';
 
-const Bookmarks = () => {
+const BookmarkSecreen = () => {
   const [results, setResults] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
   const styles = isDarkMode ? darkStyles : lightStyles;
   const { removePost, getPosts } = useBookmarkPost();
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const posts = await getPosts();
-        setResults(posts);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      }
-    };
+  const fetchPosts = async () => {
+    try {
+      const posts = await getPosts();
+      setResults(posts);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchPosts();
   }, []);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchPosts();
+    setRefreshing(false);
+  };
+
+  const renderItem = ({ item }) => (
+    <Text
+      style={{ fontFamily: 'HindShiliguri', margin: 4 }}
+    >{`Item ${item.id}: ${item.title}`}</Text>
+  );
 
   return (
     <View style={styles.container}>
       <Header />
-      {results.map((item) => (
-        <Text
-          key={item.id}
-          style={{ fontFamily: 'HindShiliguri', margin: 4 }}
-        >{`Item ${item.id}: ${item.title}`}</Text>
-      ))}
+      <FlashList
+        data={results}
+        renderItem={renderItem}
+        estimatedItemSize={50}
+        keyExtractor={(item) => item.id.toString()}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      />
     </View>
   );
 };
 
-export default Bookmarks;
+
 
 const darkStyles = StyleSheet.create({
   container: {
@@ -52,3 +69,4 @@ const lightStyles = StyleSheet.create({
     flex: 1,
   },
 });
+export default BookmarkSecreen
