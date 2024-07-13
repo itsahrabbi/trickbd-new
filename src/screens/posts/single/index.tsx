@@ -22,7 +22,7 @@ import * as Helpers from '@/src/helpers';
 import Header from './components/Header';
 import boilerplate from './webview/boilerplate';
 import ErrorMessage from '@/src/components/extra/ErrorMessage';
-
+import { decode } from 'html-entities';
 const INITIAL_HEIGHT = Dimensions.get('window').height;
 
 const App = () => {

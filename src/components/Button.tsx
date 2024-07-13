@@ -1,6 +1,6 @@
 import { useColorScheme } from '@/src/hooks/useColorScheme';
 import React from 'react';
-import { Button } from 'react-native-paper';
+import { Button, ActivityIndicator } from 'react-native-paper';
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -18,13 +18,19 @@ const CustomButton = ({
   loading,
 }) => {
   const isDarkMode = useColorScheme() === 'dark';
-
   const buttonColor = isDarkMode ? darkColor : lightColor;
   const textColor = isDarkMode ? darkTextColor : lightTextColor;
-  const iconComponent =
-    icon || loading
-      ? () => <Ionicons name={icon} size={16} color={isDarkMode ? '#FFFFFF' : '#ffffff'} />
-      : undefined;
+
+  const iconComponent = () => {
+    if (loading) {
+      return <ActivityIndicator size={16} color={textColor} />;
+    }
+    if (icon) {
+      return <Ionicons name={icon} size={16} color={textColor} />;
+    }
+    return undefined;
+  };
+
   return (
     <Button
       icon={iconComponent}
