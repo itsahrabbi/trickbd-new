@@ -42,8 +42,8 @@ const Header = ({ onSharePress, bookmarkData, loadState }) => {
       authorName: postData?.author?.name,
       authorRole: postData?.author?.role,
       postDate: postData?.date,
-      categoryName: postData?.categories ? postData.categories[0].title : 'Uncategorized',
-      categorySlug: postData?.categories ? postData.categories[0].slug : 'uncategorized',
+      categoryName: postData?.categories ? postData?.categories[0]?.title : 'Uncategorized',
+      categorySlug: postData?.categories ? postData?.categories[0]?.slug : 'uncategorized',
       likes: postData?.custom_fields?.trickbd_total_likes?.[0] ?? 0,
       views: postData?.custom_fields?.views?.[0] ?? 0,
     };
